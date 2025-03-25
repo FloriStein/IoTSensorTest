@@ -1,9 +1,13 @@
-import "./assets/main.css";
-import { createApp } from "vue";
-import App from "./App.vue";
-import { Amplify } from "aws-amplify";
-import outputs from "../amplify_outputs.json";
+import  "./assets/main.css";
+import { Amplify } from 'aws-amplify';
+import { parseAmplifyConfig } from "aws-amplify/utils";
+import outputs from '../amplify_outputs.json';
+const amplifyConfig = parseAmplifyConfig(outputs);
 
-Amplify.configure(outputs);
-
-createApp(App).mount("#app");
+Amplify.configure({
+    ...amplifyConfig,
+    API: {
+        ...amplifyConfig.API,
+        REST: outputs.custom.API,
+    },
+});
